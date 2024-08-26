@@ -8,7 +8,6 @@ public class Main {
     static int N, M, R, minLength;
     static int[][] arr;
     static boolean[][] v;
-    static int[] d = {1};
     
 //    긴거와 짧은 거 중에 짧은거 / 2
 
@@ -20,18 +19,14 @@ public class Main {
 //5 4 3 2
 
     
-    // r : 0, c : 0, r : 1, c : 1 ...
     static void huijeun() {
         v = new boolean[N][M];
     	for (int k = 0; k < minLength/2; k++) {
     		int r = k;
     		int c = k;
-//    		System.out.println(r + " " + c);
-//    		if(v[r][c+1]) break;
-            int temp = arr[r][++c]; // 1, 2
+            int temp = arr[r][++c];
             v[r][c] = true;
             int forward = 1;
-            // c+1 / r+1 / c-1 / r-1s
             while(true) {
             	if(forward==1) {
             		if(c+1 >= M || v[r][c+1]) {
@@ -59,7 +54,6 @@ public class Main {
             	}
             	if(forward==4) {
             		if(r-1 < 0 || v[r-1][c]) {
-//            			System.out.println(r + " " + c);
             			arr[r][c] = temp;
             			break;
             		}
@@ -94,26 +88,14 @@ public class Main {
         for (int i = 0; i < R; i++) {
             huijeun();
 		}
+        StringBuilder sb = new StringBuilder();
         for (int i = 0; i < N; i++) {
 			for (int j = 0; j < M; j++) {
-				System.out.print(arr[i][j] + " ");
+				sb.append(arr[i][j]).append(" ");
 			}
-			System.out.println();
+			sb.append('\n');
 		}
+        System.out.println(sb);
     }
 
 }
-
-
-//2 2 3
-//1 2
-//3 4
-
-//2 4
-//1 3
-//
-//4 3
-//2 1
-//
-//3 1
-//4 2

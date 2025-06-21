@@ -1,81 +1,78 @@
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.util.ArrayDeque;
-import java.util.Queue;
-import java.util.StringTokenizer;
-
-class Point{
-	int r, c;
-	Point(int r, int c){
-		this.r = r;
-		this.c = c;
-	}
-}
-
+import java.util.*;
+import java.io.*;
 
 public class Main {
-	static int N, M;
-	static int[][] map;
+	static int T, N, M, result;
+	static int[][] arr;
 	static boolean[][] v;
-	static int[] dr = {-1, 1, 0, 0};
-	static int[] dc = {0, 0, -1, 1};
-	static int result = 0;
-	
-	private static void bfs(int Sr, int Sc) {
-		Queue<Point> Q = new ArrayDeque<Point>();
-		Q.offer(new Point(Sr, Sc));
-		v[Sr][Sc] = true;
-		
-		while(!Q.isEmpty()) {
-			Point p = Q.poll();
-			for(int i = 0; i < 4; i++) {
-				int nr = p.r + dr[i];
-				int nc = p.c + dc[i];
-				if(nr >= 0 && nr < N && nc >= 0 && nc < M && !v[nr][nc] && map[nr][nc] == 1) {
-					v[nr][nc] = true;
-					Q.offer(new Point(nr, nc));
-				}
-			}
-		}
-	}
+	static int[] dr = {0, 0, 1, -1};
+	static int[] dc = {1, -1, 0, 0};
 	
 	
-	public static void main(String[] args) throws Exception{
-		/*
-		 * 0: 배추 x, 1: 배추 o
-		 * 입력 첫줄에는 테스트 케이스 개수 T
-		 * 그 다음 줄부터 각각의 테스트 케이스에 대해 첫째 줄에는 배추를 심은 배추밭의 가로길이 M, 
-		 * 세로길이 N 그리고 배추가 심어져 있는 위치의 개수 K
-		 */
-		int x, y;
+	
+	public static void main(String[] args) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringTokenizer st = new StringTokenizer(br.readLine());
-		int T = Integer.parseInt(st.nextToken());
+		StringTokenizer st;
+		T = Integer.parseInt(br.readLine());
 		for(int t=0; t<T; t++) {
-			result = 0;
 			st = new StringTokenizer(br.readLine());
 			N = Integer.parseInt(st.nextToken());
 			M = Integer.parseInt(st.nextToken());
-			int BaeChu = Integer.parseInt(st.nextToken());
-			map = new int [N][M];
-			v = new boolean[N][M];
-			for(int i=0; i<BaeChu; i++) {
+			int K = Integer.parseInt(st.nextToken());
+//			System.out.println(N + " " + M + " " + K);
+			// 배추 위치
+			arr = new int[N][M];
+			for(int a=0; a<K; a++) {
 				st = new StringTokenizer(br.readLine());
-				x = Integer.parseInt(st.nextToken());
-				y = Integer.parseInt(st.nextToken());
-				map[x][y] = 1;
+				arr[Integer.parseInt(st.nextToken())][Integer.parseInt(st.nextToken())] = 1;
 			}
+//			for (int i = 0; i < N; i++) {
+//				System.out.println(Arrays.toString(arr[i]));
+//			}
 			
-			for(int i = 0; i< N; i++) {
-				for(int j = 0; j < M; j++) {
-					if(map[i][j] == 1 && !v[i][j]) {
+			// 지렁이 심기
+			result = 0;
+			v = new boolean[N][M];
+			for(int i=0; i<N; i++) {
+				for(int j=0; j<M; j++) {
+					if(arr[i][j]==1 && !v[i][j]) {
 						bfs(i, j);
 						result++;
-					}				
+					}
 				}
 			}
 			System.out.println(result);
 		}
+	}
+	
+	static class Point {
+		int r, c;
+		Point(int r, int c) {
+			this.r = r;
+			this.c = c;
+		}
+	}
+	
+	private static void bfs(int r, int c) {
+		Queue<Point> queue = new ArrayDeque<>();
+		queue.offer(new Point(r, c));
+		v[r][c] = true;
+		
+		
+		while(!queue.isEmpty()) {
+			Point p = queue.poll();
+			
+			for(int d=0; d<4; d++) {
+				int nr = p.r + dr[d];
+				int nc = p.c + dc[d];
+				if(nr>=0 && nr<N && nc>=0 && nc<M && arr[nr][nc]==1 &&!v[nr][nc]) {
+					queue.offer(new Point(nr, nc));
+					v[nr][nc] = true;
+				}
+			}
+		}
+		
+		
 	}
 }
 

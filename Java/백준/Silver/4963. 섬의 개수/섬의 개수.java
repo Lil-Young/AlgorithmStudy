@@ -1,53 +1,36 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.StringTokenizer;
+import java.util.*;
+import java.io.*;
 
 public class Main {
+	static int N, M, result;
 	static int[][] arr;
 	static boolean[][] v;
-	static int result, h, w;
-	//팔방
-	static int[] dr = {1, -1, 0, 0, 1, -1, 1, -1};
-	static int[] dc = {0, 0, 1, -1, 1, -1, -1, 1};
+	static int[] dr = {0, 0, 1, -1, -1, 1, -1, 1};
+	static int[] dc = {1, -1, 0, 0, -1, 1, 1, -1};
 	
-	private static void dfs(int r, int c) {
-		// 지도에서 땅은 1, 바다는 0
-		
-		// 현재 위치가 섬이고, 방문을 하지 않았으면 
-		v[r][c] = true;
-		
-		for (int i = 0; i < 8; i++) {
-			int nr = r + dr[i];
-			int nc = c + dc[i];
-			if(nr>=0 && nr<h && nc>=0 && nc<w && !v[nr][nc] && arr[nr][nc] == 1){
-				dfs(nr, nc);
-			}
-		}
-	}
-	
-	public static void main(String[] args) throws IOException {
+	// 1은 땅, 0은 바다
+	public static void main(String[] args) throws Exception{
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st;
 		while(true) {
 			st = new StringTokenizer(br.readLine());
-			w = Integer.parseInt(st.nextToken());
-			h = Integer.parseInt(st.nextToken());
-			if(w==0 && h==0) {
-				break;
-			}
-			arr = new int[h][w];
-			v = new boolean[h][w];
-			
-			for (int i = 0; i < h; i++) {
+			M = Integer.parseInt(st.nextToken());
+			N = Integer.parseInt(st.nextToken());
+			if(N==0 && M==0) break;
+			arr = new int[N][M];
+			// 섬, 바다 심기
+			for (int i = 0; i < N; i++) {
 				st = new StringTokenizer(br.readLine());
-				for (int j = 0; j < w; j++) {
+				for (int j = 0; j < M; j++) {
 					arr[i][j] = Integer.parseInt(st.nextToken());
 				}
 			}
+			
+			v = new boolean[N][M];
 			result = 0;
-			for (int i = 0; i < h; i++) {
-				for (int j = 0; j < w; j++) {
+			// dfs
+			for (int i = 0; i < N; i++) {
+				for (int j = 0; j < M; j++) {
 					if(arr[i][j] == 1 && !v[i][j]) {
 						dfs(i, j);
 						result++;
@@ -57,5 +40,16 @@ public class Main {
 			System.out.println(result);
 		}
 	}
-
+	private static void dfs(int r, int c) {
+		
+		for (int d = 0; d < 8; d++) {
+			int nr = r + dr[d];
+			int nc = c + dc[d];
+			
+			if(nr>=0 && nr<N && nc>=0 && nc<M && arr[nr][nc]==1 && !v[nr][nc]) {
+				v[nr][nc] = true;
+				dfs(nr, nc);
+			}
+		}
+	}
 }

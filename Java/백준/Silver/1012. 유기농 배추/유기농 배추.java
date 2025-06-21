@@ -36,12 +36,25 @@ public class Main {
 			for(int i=0; i<N; i++) {
 				for(int j=0; j<M; j++) {
 					if(arr[i][j]==1 && !v[i][j]) {
-						bfs(i, j);
+//						bfs(i, j);
+						dfs(i, j);
 						result++;
 					}
 				}
 			}
 			System.out.println(result);
+		}
+	}
+	
+	private static void dfs(int r, int c) { 
+		
+		for(int d=0; d<4; d++) {
+			int nr = r + dr[d];
+			int nc = c + dc[d];
+			if(nr>=0 && nr<N && nc>=0 && nc<M && arr[nr][nc]==1 && !v[nr][nc]) {
+				v[nr][nc] = true;
+				dfs(nr, nc);
+			}
 		}
 	}
 	
@@ -53,26 +66,24 @@ public class Main {
 		}
 	}
 	
-	private static void bfs(int r, int c) {
-		Queue<Point> queue = new ArrayDeque<>();
-		queue.offer(new Point(r, c));
-		v[r][c] = true;
-		
-		
-		while(!queue.isEmpty()) {
-			Point p = queue.poll();
-			
-			for(int d=0; d<4; d++) {
-				int nr = p.r + dr[d];
-				int nc = p.c + dc[d];
-				if(nr>=0 && nr<N && nc>=0 && nc<M && arr[nr][nc]==1 &&!v[nr][nc]) {
-					queue.offer(new Point(nr, nc));
-					v[nr][nc] = true;
-				}
-			}
-		}
-		
-		
-	}
+//	private static void bfs(int r, int c) {
+//		Queue<Point> queue = new ArrayDeque<>();
+//		queue.offer(new Point(r, c));
+//		v[r][c] = true;
+//		
+//		
+//		while(!queue.isEmpty()) {
+//			Point p = queue.poll();
+//			
+//			for(int d=0; d<4; d++) {
+//				int nr = p.r + dr[d];
+//				int nc = p.c + dc[d];
+//				if(nr>=0 && nr<N && nc>=0 && nc<M && arr[nr][nc]==1 &&!v[nr][nc]) {
+//					queue.offer(new Point(nr, nc));
+//					v[nr][nc] = true;
+//				}
+//			}
+//		}
+//	}
 }
 

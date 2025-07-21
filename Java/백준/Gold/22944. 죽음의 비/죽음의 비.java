@@ -43,24 +43,21 @@ public class Main {
 		Queue<Point> queue = new ArrayDeque<>();
 		queue.offer(new Point(r, c, 0, H, 0));
 		int[][] v = new int[N][N];
-		for (int i = 0; i < N; i++) {
-			Arrays.fill(v[i], -1);
-		}
-		v[r][c]=H;
+		v[r][c] = H;
 		
 		while(!queue.isEmpty()) {
 			Point p = queue.poll();
 			if(arr[p.r][p.c]=='E') return p.cnt;
-			
 			for (int d = 0; d < 4; d++) {
 				int nr = p.r+dr[d];
 				int nc = p.c+dc[d];
+				
 				if(nr<0 || nr>=N || nc<0 || nc>=N) continue;
 				
 				int stemina = p.stemina;
 				int um_cnt = p.um_cnt;
 				
-				if(arr[nr][nc]=='U') {
+				if(arr[nr][nc] == 'U') {
 					um_cnt = D;
 				}else {
 					if(um_cnt>0) {
@@ -69,16 +66,12 @@ public class Main {
 						stemina--;
 					}
 				}
-				
-				if(stemina<=0) continue;
-				
-				if(stemina+um_cnt <= v[nr][nc]) continue;
+				if(v[nr][nc] >= um_cnt+stemina) continue;
 				
 				queue.offer(new Point(nr, nc, p.cnt+1, stemina, um_cnt));
-				v[nr][nc] = stemina+um_cnt;
-			}	
+				v[nr][nc]=um_cnt+stemina;
+			}
 		}
-		
 		return -1;
 	}
 }

@@ -1,49 +1,60 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.StringTokenizer;
+import java.util.*;
+import java.io.*;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int T = Integer.parseInt(br.readLine());
-
-        for (int t = 0; t < T; t++) {
-            StringTokenizer st = new StringTokenizer(br.readLine());
-            int n = Integer.parseInt(st.nextToken());
-            int m = Integer.parseInt(st.nextToken());
-
-            Queue<int[]> queue = new LinkedList<>();
-            st = new StringTokenizer(br.readLine());
-            for (int i = 0; i < n; i++) {
-                int priority = Integer.parseInt(st.nextToken());
-                queue.offer(new int[]{priority, i});
-            }
-
-            int count = 0;
-            while (!queue.isEmpty()) {
-                int[] current = queue.poll();
-                boolean isHighest = true;
-
-                for (int[] doc : queue) {
-                    if (doc[0] > current[0]) {
-                        isHighest = false;
-                        break;
-                    }
-                }
-
-                if (!isHighest) {
-                    queue.offer(current);
-                } else {
-                    count++;
-                    if (current[1] == m) {
-                        System.out.println(count);
-                        break;
-                    }
-                }
-            }
-        }
-    }
+	static int T, N, M;
+	static Queue<Point> queue;
+	static class Point{
+		int idx, important;
+		Point(int idx, int important){
+			this.idx=idx;
+			this.important=important;
+		}
+	}
+	public static void main(String[] args) throws Exception{
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st;
+		T = Integer.parseInt(br.readLine());
+		for(int t=0; t<T; t++) {
+			st = new StringTokenizer(br.readLine());
+			N = Integer.parseInt(st.nextToken()); // 문서 개수
+			M = Integer.parseInt(st.nextToken()); // Queue에 몇 번째 놓여있는지
+			queue = new ArrayDeque<Point>();
+			st = new StringTokenizer(br.readLine());
+			for(int i=0; i<N; i++) {
+				int val = Integer.parseInt(st.nextToken());
+				queue.offer(new Point(i, val));
+			}
+			
+			int result = process();
+			System.out.println(result);
+		}
+	}
+	private static int process() {
+		int cnt = 0;
+		
+		boolean find = false;
+		
+		while(true) {
+			Point p = queue.poll();
+			// queue 안에 현재 값 보다 큰 값이 있는지 확인
+			boolean isMax = false;
+			for(Point p2 : queue) {
+				if(p.important < p2.important) {
+					isMax = true;
+				}
+			}
+			
+			if(isMax) {
+				queue.offer(p);
+			}else if(!isMax && M==p.idx) {
+				cnt++;
+				break;
+			}else {
+				cnt++;
+			}
+		}		
+		
+		return cnt;
+	}
 }

@@ -1,8 +1,11 @@
 import java.io.*;
 import java.util.*;
 
+
+
+
 public class Main {
-	static int N, L, R;
+	static int N, L, R, sum;
 	static boolean isMove;
 	static int[][] arr;
 	static boolean[][] v;
@@ -44,14 +47,10 @@ public class Main {
 						if(!isPossible) continue;
 						isMove = true;
 						list = new ArrayList<>();
+						sum=arr[i][j];
 						// list에 공유하는 좌표를 넣는다.
 						bfs(i, j);
-						
-						// list에 있는 값을 전부 더해서 평균을 만든다.
-						int sum = 0;
-						for(Point p : list) {
-							sum+=arr[p.r][p.c];
-						}
+
 						int avg = sum/list.size();
 						// list에 있는 값을 평균으로 변경한다.
 						for(Point p : list) {
@@ -97,6 +96,7 @@ public class Main {
 					queue.offer(new Point(nr, nc));
 					v[nr][nc] = true;
 					list.add(new Point(nr, nc));
+					sum+=arr[nr][nc];
 				}
 			}
 		}

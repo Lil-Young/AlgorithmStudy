@@ -1,48 +1,43 @@
-import java.util.*;
 import java.io.*;
+import java.util.*;
 
 public class Main {
-	// 1부터 N까지 자연수 중에서 M개를 고른 수열
-	// 같은 수를 여러번 골라도 된다.
-	// 중복순열 인거같다.
-	
 	static int N, M;
 	static int[] arr;
 	static int[] sel;
 	static boolean[] v;
-	static StringBuilder sb = new StringBuilder();
-	
-	public static void main(String[] args) throws Exception{
+	static StringBuilder sb;
+	public static void main(String[] args) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringTokenizer st = new StringTokenizer(br.readLine());
+		StringTokenizer st = new StringTokenizer(br.readLine().trim());
 		N = Integer.parseInt(st.nextToken());
 		M = Integer.parseInt(st.nextToken());
-		
 		arr = new int[N];
-		for(int i=1; i<N+1; i++) {
-			arr[i-1] = i;
+		for (int i = 0; i < N; i++) {
+			arr[i] = i+1;
 		}
 		sel = new int[M];
 		v = new boolean[N];
-		//중복순열
+		sb = new StringBuilder();
+		// 중복순열
 		repeatPermutation(0);
 		System.out.println(sb);
 	}
-	private static void repeatPermutation(int k) {
-		if(sel.length == k) {
+	
+	private static void repeatPermutation(int idx) {
+		if(idx == sel.length) {
 //			System.out.println(Arrays.toString(sel));
 			for(int val : sel) {
-//				System.out.print(val + " ");
-				sb.append(val).append(" ");
+				sb.append(val + " ");
 			}
-//			System.out.println();
 			sb.append('\n');
 			return;
 		}
 		
-		for(int i=0; i<arr.length; i++) {
-			sel[k] = arr[i];
-			repeatPermutation(k+1);
+		for (int i = 0; i < N; i++) {
+			sel[idx] = arr[i];
+			repeatPermutation(idx+1);
 		}
 	}
+	
 }

@@ -2,42 +2,38 @@ import java.util.*;
 import java.io.*;
 
 public class Main {
-	// 1부터 N개 중에서 M개를 고르는데, 같은 수를 여러번 골라도된다(중복), 비내림차순(순서가 중요하지 않다 -> 조합)
-	// 중복조합 인거같습니다.
 	static int N, M;
 	static int[] arr;
 	static int[] sel;
-	static boolean[] v;
-	static StringBuilder sb = new StringBuilder();
-	
-	public static void main(String[] args) throws Exception{
+	static StringBuilder sb;
+	public static void main(String[] args) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringTokenizer st = new StringTokenizer(br.readLine());
-		int N = Integer.parseInt(st.nextToken());
-		int M = Integer.parseInt(st.nextToken());
-		
+		StringTokenizer st = new StringTokenizer(br.readLine().trim());
+		N = Integer.parseInt(st.nextToken());
+		M = Integer.parseInt(st.nextToken());
 		arr = new int[N];
-		for(int i=1; i<N+1; i++) {
-			arr[i-1] = i;
-		}
 		sel = new int[M];
-		v = new boolean[N];
+		for (int i = 0; i < arr.length; i++) {
+			arr[i] = i+1;
+		}
 		
-		repeat_combination(0, 0);
+		sb = new StringBuilder();
+		repeatCombination(0, 0);
+		System.out.println(sb);
 	}
-	
-	private static void repeat_combination(int idx, int k) { 
+	private static void repeatCombination(int idx, int k) {
 		if(sel.length == k) {
+//			System.out.println(Arrays.toString(sel));
 			for(int val : sel) {
-				System.out.print(val + " ");
+				sb.append(val + " ");
 			}
-			System.out.println();
+			sb.append('\n');
 			return;
 		}
 		if(arr.length == idx) return;
 		
 		sel[k] = arr[idx];
-		repeat_combination(idx, k+1);
-		repeat_combination(idx+1, k);
+		repeatCombination(idx, k+1);
+		repeatCombination(idx+1, k);		
 	}
 }

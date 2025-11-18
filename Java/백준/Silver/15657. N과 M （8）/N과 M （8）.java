@@ -2,39 +2,43 @@ import java.util.*;
 import java.io.*;
 
 public class Main {
-	//걍 중복조합이다.
 	static int N, M;
 	static int[] arr;
 	static int[] sel;
-	static StringBuilder sb = new StringBuilder();
-	
-	public static void main(String[] args) throws Exception{
+	static StringBuilder sb;
+	public static void main(String[] args) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine().trim());
 		N = Integer.parseInt(st.nextToken());
 		M = Integer.parseInt(st.nextToken());
 		arr = new int[N];
-		st = new StringTokenizer(br.readLine());
-		for(int i=0; i<N; i++) {
+		st = new StringTokenizer(br.readLine().trim());
+		for(int i=0; i<arr.length; i++) {
 			arr[i] = Integer.parseInt(st.nextToken());
 		}
-		Arrays.sort(arr);
 		sel = new int[M];
-		repeat_combination(0, 0);
+		
+		
+		Arrays.sort(arr);
+		sb = new StringBuilder();
+		repeatCombination(0, 0);
 		System.out.println(sb);
 	}
-	private static void repeat_combination(int idx, int k) {
-		if(sel.length == k) {
+	private static void repeatCombination(int idx, int k) {
+		if(k == sel.length) {
+//			System.out.println(Arrays.toString(sel));
 			for(int val : sel) {
-				sb.append(val).append(" ");
+				sb.append(val + " ");
 			}
 			sb.append('\n');
 			return;
 		}
-		if(arr.length == idx) return;
+		
+		
+		if(idx == arr.length) return;
 		
 		sel[k] = arr[idx];
-		repeat_combination(idx, k+1);
-		repeat_combination(idx+1, k);
+		repeatCombination(idx, k+1);
+		repeatCombination(idx+1, k);
 	}
 }

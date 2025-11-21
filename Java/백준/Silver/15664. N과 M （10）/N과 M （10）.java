@@ -2,11 +2,10 @@ import java.util.*;
 import java.io.*;
 
 public class Main {
-	// 조합임, 근데 중복된 값은 하나만 출력 ㅇㅇ
 	static int N, M;
 	static int[] arr;
 	static int[] sel;
-	static StringBuilder sb = new StringBuilder();
+	static StringBuilder sb;
 	static Set<String> set;
 	
 	public static void main(String[] args) throws Exception{
@@ -22,12 +21,12 @@ public class Main {
 		Arrays.sort(arr);
 		sel = new int[M];
 		set = new LinkedHashSet<>();
-		repeat_combination(0, 0);
+		sb = new StringBuilder();
+		repeatCombination(0, 0);
 		System.out.println(sb);
 	}
-	private static void repeat_combination(int idx, int k) {
+	private static void repeatCombination(int idx, int k) {
 		if(sel.length == k) {
-			// 배열 -> String
 			StringBuilder temp = new StringBuilder();
 			for(int val : sel) {
 				temp.append(val).append(" ");
@@ -46,7 +45,7 @@ public class Main {
 		if(arr.length == idx) return;
 		
 		sel[k] = arr[idx];
-		repeat_combination(idx+1, k+1);
-		repeat_combination(idx+1, k);
+		repeatCombination(idx+1, k+1);
+		repeatCombination(idx+1, k);
 	}
 }
